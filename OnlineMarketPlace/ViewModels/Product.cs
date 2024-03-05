@@ -11,14 +11,13 @@ namespace OnlineMarketPlace
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public decimal Rating { get; set; }
 
         private int _amount;
-
-
         public int Amount
         {
             get { return _amount; }
@@ -27,12 +26,15 @@ namespace OnlineMarketPlace
                 if (_amount != value)
                 {
                     _amount = value;
-                    // change amount in the database
+                    // TBD change amount in the database
+
+                    // Changes the display value in connected View
                     OnPropertyChanged(nameof(Amount));
                 }
             }
         }
 
+        // should work somehow? why not tho
         private void OnPropertyChanged(string v)
         {
             throw new NotImplementedException();

@@ -55,5 +55,17 @@ namespace OnlineMarketPlace
                 }
             }
         }
+
+        // public ? PullAllPUPs() {}
+
+        // public ? PullPUPByID(int PUP_ID) {}
+
+        // public ? PullWorkersOfPUP(int PUP_ID) {}
+
+
+
+
+
+
     }
 }

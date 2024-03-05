@@ -26,7 +26,7 @@ namespace OnlineMarketPlace
         {
             // InitializeComponent();
 
-            // Assuming you have a method to retrieve products from the database
+            // method to retrieve products from the database
             Products = GetProducts();
 
             // Set the DataContext for data binding

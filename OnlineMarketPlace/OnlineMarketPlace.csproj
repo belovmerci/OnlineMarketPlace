@@ -55,27 +55,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AdminPupControl.xaml.cs">
+    <Compile Include="ViewModels\Employee.cs" />
+    <Compile Include="ViewModels\PickUpPoint.cs" />
+    <Compile Include="Views\AdminPupControl.xaml.cs">
       <DependentUpon>AdminPupControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AdminViewControlViewModel.cs" />
-    <Compile Include="AdminViewProducts.xaml.cs">
+    <Compile Include="ViewModels\AdminViewControlViewModel.cs" />
+    <Compile Include="Views\AdminViewProducts.xaml.cs">
       <DependentUpon>AdminViewProducts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Product.cs" />
+    <Compile Include="ViewModels\Product.cs" />
     <Compile Include="SqlDatabaseHelper.cs" />
-    <Compile Include="ViewProducts.xaml.cs">
+    <Compile Include="Views\ViewProducts.xaml.cs">
       <DependentUpon>ViewProducts.xaml</DependentUpon>
     </Compile>
-    <Page Include="AdminPupControl.xaml">
+    <Page Include="Views\AdminPupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AdminViewProducts.xaml">
+    <Page Include="Views\AdminViewProducts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginUserControl.xaml">
+    <Page Include="Views\LoginUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -87,14 +89,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LoginUserControl.xaml.cs">
+    <Compile Include="Views\LoginUserControl.xaml.cs">
       <DependentUpon>LoginUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ViewProducts.xaml">
+    <Page Include="Views\ViewProducts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

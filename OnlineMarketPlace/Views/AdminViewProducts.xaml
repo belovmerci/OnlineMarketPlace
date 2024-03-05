@@ -25,10 +25,10 @@
         </StackPanel>
 
         <!-- Controls -->
-        <Button Content="Восх/Нисход" Margin="187,10,221,0" VerticalAlignment="Top"
+        <Button Content="Восх/Нисход" Margin="196,0,212,0" VerticalAlignment="Center"
              Click="AscDescButton_Click" Grid.Column="1" Height="30"/>
-        <Button Content="Просмотр заказов" Margin="283,10,97,0" VerticalAlignment="Top"
-             Click="SwitchToOrdersViewButton_Click" Grid.Column="1" Height="30"/>
+        <Button Content="ПВЗ" Margin="307,0,97,0" VerticalAlignment="Center" Background="Orange"
+             Click="SwitchToPUPViewButton_Click" Grid.Column="1" Height="30"/>
         <Button Content="Выйти" Margin="398,10,10,0" VerticalAlignment="Top"
              Click="QuitButton_Click" Grid.Column="1" Height="30" Background="Red"/>
         <Button Content="Switch to AdminPupView" Margin="448,0,68,0" VerticalAlignment="Center" Height="30"
@@ -48,13 +48,13 @@
         </DataGrid>
 
         <!-- Controls -->
-        <Button Content="Add Product" Margin="173,384,475,6" VerticalAlignment="Center" Height="30"
+        <Button Content="Add Product" Margin="217,364,188,0" VerticalAlignment="Top" Height="30"
                 Command="{Binding AddProductCommand}" Grid.Column="1" Grid.Row="1"/>
-        <Button Content="Delete Product" Margin="341,384,283,6" VerticalAlignment="Center" Height="30"
+        <Button Content="Delete Product" Margin="307,364,96,0" VerticalAlignment="Top" Height="30"
                 Command="{Binding DeleteProductCommand}" Grid.Column="1" Grid.Row="1"/>
-        <Button Content="Save Changes" VerticalAlignment="Center" Height="30"
-                Command="{Binding SaveChangesCommand}" Grid.Column="1" Margin="590,384,24,6" Grid.Row="1"/>
-        
+        <Button Content="Save Changes" VerticalAlignment="Top" Height="30"
+                Command="{Binding SaveChangesCommand}" Grid.Column="1" Margin="399,364,10,0" Grid.Row="1"/>
+
 
     </Grid>
 </UserControl>

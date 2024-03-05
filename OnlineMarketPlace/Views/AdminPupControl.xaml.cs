@@ -24,5 +24,13 @@ namespace OnlineMarketPlace
         {
             InitializeComponent();
         }
+
+        private void ChoiceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // TBD: change grid to employee grid
+            // calculate employee stats
+            // display employee stats?
+            // (as per mvvm shove them into Employee?)
+        }
     }
 }
