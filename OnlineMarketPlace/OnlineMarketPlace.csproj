@@ -55,16 +55,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\Employee.cs" />
-    <Compile Include="ViewModels\PickUpPoint.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\PickUpPoint.cs" />
     <Compile Include="Views\AdminPupControl.xaml.cs">
       <DependentUpon>AdminPupControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AdminViewControlViewModel.cs" />
+    <Compile Include="Models\AdminViewControlViewModel.cs" />
     <Compile Include="Views\AdminViewProducts.xaml.cs">
       <DependentUpon>AdminViewProducts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Product.cs" />
+    <Compile Include="Models\Product.cs" />
     <Compile Include="SqlDatabaseHelper.cs" />
     <Compile Include="Views\ViewProducts.xaml.cs">
       <DependentUpon>ViewProducts.xaml</DependentUpon>

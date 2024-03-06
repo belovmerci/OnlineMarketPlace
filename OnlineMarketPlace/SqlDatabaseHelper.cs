@@ -56,11 +56,142 @@ namespace OnlineMarketPlace
             }
         }
 
-        // public ? PullAllPUPs() {}
+        public List<PickUpPoint> PullAllPUPs()
+        {
+            List<PickUpPoint> pickupPoints = new List<PickUpPoint>();
 
-        // public ? PullPUPByID(int PUP_ID) {}
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
-        // public ? PullWorkersOfPUP(int PUP_ID) {}
+                string query = "SELECT * FROM Пункты_выдачи;";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        PickUpPoint pickupPoint = new PickUpPoint
+                        {
+                            /*
+                            ID = reader.GetInt32(0),
+                            Страна = reader.GetString(1),
+                            Город = reader.GetString(2),
+                            Улица = reader.GetString(3),
+                            НомерУлицы = reader.GetString(4),
+                            НомерКвартиры = reader.GetString(5),
+                            НомерКомнаты = reader.GetString(6),
+                            ПочтовыйИндекс = reader.GetString(7),
+                            Рейтинг = reader.GetDecimal(8)
+                            */
+                            Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                            Country = reader.GetString(reader.GetOrdinal("СТРАНА")),
+                            City = reader.GetString(reader.GetOrdinal("ГОРОД")),
+                            Street = reader.GetString(reader.GetOrdinal("УЛИЦА")),
+                            StreetNumber = reader.GetString(reader.GetOrdinal("НОМЕР_УЛИЦЫ")),
+                            RoomNumber = reader.GetString(reader.GetOrdinal("НОМЕР_КОМНАТЫ")),
+                            PostIndex = reader.GetString(reader.GetOrdinal("ПОЧТОВЫЙ_ИНДЕКС")),
+                            Rating = reader.GetDecimal(reader.GetOrdinal("РЕЙТИНГ"))
+                    };
+                        pickupPoints.Add(pickupPoint);
+                    }
+                }
+            }
+
+            return pickupPoints;
+        }
+
+        public PickUpPoint PullPUPByID(int PUP_ID)
+        {
+            PickUpPoint pickupPoint = null;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM Пункты_выдачи WHERE ID = @PUP_ID;";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@PUP_ID", PUP_ID);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        pickupPoint = new PickUpPoint
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                            Country = reader.GetString(reader.GetOrdinal("СТРАНА")),
+                            City = reader.GetString(reader.GetOrdinal("ГОРОД")),
+                            Street = reader.GetString(reader.GetOrdinal("УЛИЦА")),
+                            StreetNumber = reader.GetString(reader.GetOrdinal("НОМЕР_УЛИЦЫ")),
+                            RoomNumber = reader.GetString(reader.GetOrdinal("НОМЕР_КОМНАТЫ")),
+                            PostIndex = reader.GetString(reader.GetOrdinal("ПОЧТОВЫЙ_ИНДЕКС")),
+                            Rating = reader.GetDecimal(reader.GetOrdinal("РЕЙТИНГ"))
+                        };
+                    }
+                }
+            }
+
+            return pickupPoint;
+        }
+
+        public Employee PullEmployeeDetails(int employeeId)
+        {
+            Employee employee = null;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"
+            SELECT 
+                L.ID,
+                L.ИМЯ AS Name,
+                L.ФАМИЛИЯ AS Surname,
+                L.ОТЧЕСТВО AS FathersName,
+                L.ДАТА_РОЖДЕНИЯ AS DateOfBirth,
+                L.ПОЛ AS Gender,
+                L.СЕРИЯ_НОМЕР_ПАСПОРТА AS PassportData,
+                SPV.ЗАРПЛАТА AS Wage,
+                AVG(ZP.ОЦЕНКА) AS Rating
+            FROM 
+                Люди L
+            JOIN 
+                Сотрудники_по_пунктам_выдачи SPV ON L.ID = SPV.FK_РАБОТНИКА
+            LEFT JOIN 
+                Заказы_по_пунктам_выдачи ZP ON SPV.ID = ZP.FK_СОТРУДНИКА
+            WHERE 
+                L.ID = @EmployeeId
+            GROUP BY 
+                L.ID, L.ИМЯ, L.ФАМИЛИЯ, L.ОТЧЕСТВО, L.ДАТА_РОЖДЕНИЯ, 
+                L.ПОЛ, L.СЕРИЯ_НОМЕР_ПАСПОРТА, SPV.ЗАРПЛАТА;";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@EmployeeId", employeeId);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        employee = new Employee
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Surname = reader.GetString(reader.GetOrdinal("Surname")),
+                            FathersName = reader.GetString(reader.GetOrdinal("FathersName")),
+                            DateOfBirth = reader.GetDateTime(reader.GetOrdinal("DateOfBirth")),
+                            Gender = reader.GetString(reader.GetOrdinal("Gender")),
+                            PassportData = reader.GetString(reader.GetOrdinal("PassportData")),
+                            Wage = reader.GetInt32(reader.GetOrdinal("Wage")),
+                            Rating = reader.IsDBNull(reader.GetOrdinal("Rating"))
+                                ? 0 : reader.GetDecimal(reader.GetOrdinal("Rating"))
+                        };
+                    }
+                }
+            }
+
+            return employee;
+        }
 
 
 
