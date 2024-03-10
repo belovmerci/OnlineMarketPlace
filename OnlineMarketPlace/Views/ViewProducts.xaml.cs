@@ -33,6 +33,26 @@ namespace OnlineMarketPlace
             DataContext = this;
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AscDescButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SwitchToOrdersViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavHelp.SwitchTo(new ViewProducts());
+        }
+
         private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             // Handle the edit ending event, if needed
@@ -43,7 +63,6 @@ namespace OnlineMarketPlace
                 // Implement logic to save changes to the database
             }
         }
-
 
         private ObservableCollection<Product> GetProducts()
         {

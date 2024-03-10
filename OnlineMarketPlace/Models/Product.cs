@@ -34,7 +34,6 @@ namespace OnlineMarketPlace
             }
         }
 
-        // should work somehow? why not tho
         private void OnPropertyChanged(string v)
         {
             throw new NotImplementedException();

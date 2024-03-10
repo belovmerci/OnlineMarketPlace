@@ -57,6 +57,9 @@
     </ApplicationDefinition>
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\PickUpPoint.cs" />
+    <Compile Include="NavHelp.cs" />
+    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\AdminPupControl.xaml.cs">
       <DependentUpon>AdminPupControl.xaml</DependentUpon>
     </Compile>
