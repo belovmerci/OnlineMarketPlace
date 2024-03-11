@@ -19,10 +19,10 @@ namespace OnlineMarketPlace
     /// <summary>
     /// Interaction logic for ViewProducts.xaml
     /// </summary>
-    public partial class ViewProducts : UserControl
+    public partial class PUPProductsView : UserControl
     {
         public ObservableCollection<Product> Products { get; set; }
-        public ViewProducts()
+        public PUPProductsView()
         {
             // InitializeComponent();
 

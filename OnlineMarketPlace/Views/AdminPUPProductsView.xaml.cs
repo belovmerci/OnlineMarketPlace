@@ -18,11 +18,12 @@ namespace OnlineMarketPlace
     /// <summary>
     /// Interaction logic for AdminViewProducts.xaml
     /// </summary>
-    public partial class AdminViewProducts : UserControl
+    public partial class AdminPUPProductsView : UserControl
     {
-        public AdminViewProducts()
+        public AdminPUPProductsView()
         {
             InitializeComponent();
+            // init adminpupproducts viewmodel
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

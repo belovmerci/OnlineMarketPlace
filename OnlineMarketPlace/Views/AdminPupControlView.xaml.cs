@@ -28,12 +28,12 @@ namespace OnlineMarketPlace
         private void ChoiceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // TBD: change grid to employee grid
-            // calculate employee stats
             // display employee stats?
             // (as per mvvm shove them into Employee?)
+
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
