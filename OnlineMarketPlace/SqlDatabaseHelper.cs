@@ -193,7 +193,27 @@ namespace OnlineMarketPlace
             return employee;
         }
 
+        public bool AuthenticateUser(string username, string password)
+        {
+            // ideally, passwords are hashed and then we pass hash
+            /*
+             * ALTER TABLE Сотрудники_по_пунктам_выдачи
+                ADD Username NVARCHAR(50) NULL,
+                    PasswordHash NVARCHAR(255) NULL;
 
+                ALTER TABLE Сотрудники_по_пунктам_выдачи
+                ADD CONSTRAINT UQ_Username UNIQUE (Username);
+            */
+            string query = @"IF EXISTS( SELECT 1 FROM Сотрудники_по_пунктам_выдачи
+                        WHERE Username = {0}
+                        AND PasswordHash = {1})
+                        SELECT 'Authentication Successful' AS Result;
+                        ELSE
+                        SELECT 'Authentication Failed' AS Result;";
+
+            return true;
+
+        }
 
 
 
