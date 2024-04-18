@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Windows;
 
 namespace OnlineMarketPlace
 {
@@ -14,10 +10,8 @@ namespace OnlineMarketPlace
         private ObservableCollection<Product> _products;
         private ObservableCollection<PickUpPoint> _pickUpPoints;
         private PickUpPoint _selectedPickUpPoint;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private string _searchText;
+
         public string SearchText
         {
             get { return _searchText; }
@@ -31,17 +25,9 @@ namespace OnlineMarketPlace
             }
         }
 
-        public ICommand SearchCommand { get; set; }
-        public ICommand AscDescCommand { get; set; }
-        public ICommand QuitCommand { get; set; }
-        public ICommand SwitchToOrdersViewCommand { get; set; }
-
         public AdminPUPControlViewModel()
         {
-            SearchCommand = new RelayCommand(SearchMethod);
-            AscDescCommand = new RelayCommand(AscDescMethod);
-            QuitCommand = new RelayCommand(QuitMethod);
-            SwitchToOrdersViewCommand = new RelayCommand(SwitchToOrdersViewMethod);
+            // Initialize commands or handle button clicks directly
         }
 
         public ObservableCollection<Product> Products
@@ -71,12 +57,36 @@ namespace OnlineMarketPlace
             {
                 _selectedPickUpPoint = value;
                 OnPropertyChanged(nameof(SelectedPickUpPoint));
-                // Load data for the selected PickUpPoint here (e.g., employees, additional PickUpPoint information)
+                // Load data for the selected PickUpPoint here
+                // (e.g., employees, additional PickUpPoint information)
             }
         }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void SearchButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Handle search button click
+        }
+
+        public void AscDescButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Handle Asc/Desc button click
+        }
+
+        public void QuitButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Handle quit button click
+        }
+
+        public void SwitchToOrdersViewButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Handle switch to orders view button click
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

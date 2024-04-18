@@ -17,12 +17,12 @@ using System.Windows.Shapes;
 namespace OnlineMarketPlace
 {
     /// <summary>
-    /// Interaction logic for ViewProducts.xaml
+    /// Interaction logic for PUPOrdersView.xaml
     /// </summary>
-    public partial class PUPProductsView : UserControl
+    public partial class PupOrdersView : UserControl
     {
         public ObservableCollection<Product> Products { get; set; }
-        public PUPProductsView()
+        public PupOrdersView()
         {
             // InitializeComponent();
 

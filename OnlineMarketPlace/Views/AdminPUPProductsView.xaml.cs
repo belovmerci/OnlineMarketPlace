@@ -18,9 +18,9 @@ namespace OnlineMarketPlace
     /// <summary>
     /// Interaction logic for AdminViewProducts.xaml
     /// </summary>
-    public partial class AdminPUPProductsView : UserControl
+    public partial class AdminPupProductsView : UserControl
     {
-        public AdminPUPProductsView()
+        public AdminPupProductsView()
         {
             InitializeComponent();
             // init adminpupproducts viewmodel

@@ -8,13 +8,38 @@ using System.Windows.Controls;
 
 namespace OnlineMarketPlace
 {
-    public static class NavHelp
+    public class NavHelp
     {
+        /*
+        private UserControl _currentControl;
+        public UserControl CurrentControl
+        {
+            get
+            {
+                return _currentControl;
+            }
+            set
+            {
+                MainWindowViewModel viewModel =
+                    (MainWindowViewModel)Application.Current.MainWindow.DataContext;
+                viewModel.CurrentControl = value;
+            }
+        }
+
+            public RelayCommand ShowLoginViewCommand { () =>  }
+            public RelayCommand ShowAdminViewProductsCommand { () => }
+            public RelayCommand ShowAdminPupControlViewCommand { () => }
+            public RelayCommand ShowAdminPupProductsViewCommand { () => }
+        */
+
         public static void SwitchTo(UserControl userControl)
         {
-            MainWindowViewModel viewModel = (MainWindowViewModel)Application.Current.MainWindow.DataContext;
+            MainWindowViewModel viewModel =
+                (MainWindowViewModel)Application.Current.MainWindow.DataContext;
             viewModel.CurrentControl = userControl;
         }
+
+
     }
 
 }

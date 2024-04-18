@@ -12,6 +12,12 @@ namespace OnlineMarketPlace
     {
         private UserControl _currentControl;
 
+        public RelayCommand ShowLoginViewCommand { get; private set; }
+        public RelayCommand ShowViewProductsCommand { get; private set; }
+        public RelayCommand ShowOrdersViewCommand { get; private set; }
+        public RelayCommand ShowAdminPupControlViewCommand { get; private set; }
+        public RelayCommand ShowAdminPupProductsViewCommand { get; private set; }
+
         public UserControl CurrentControl
         {
             get => _currentControl;
@@ -24,8 +30,38 @@ namespace OnlineMarketPlace
 
         public MainWindowViewModel()
         {
+            ShowLoginViewCommand = new RelayCommand(param => ShowLoginView());
+            ShowViewProductsCommand = new RelayCommand(param => ShowProductsView());
+            ShowOrdersViewCommand = new RelayCommand(param => ShowOrdersView());
+            ShowAdminPupControlViewCommand = new RelayCommand(param => ShowAdminPUPControlView());
+            ShowAdminPupProductsViewCommand = new RelayCommand(param => ShowAdminPUPProductsView());
+
             // Set LoginUserControl as the initial control
-            CurrentControl = new LoginUserControl();
+            CurrentControl = new LoginView();
+        }
+
+        private void ShowLoginView()
+        {
+            CurrentControl = new LoginView();
+        }
+
+        private void ShowProductsView()
+        {
+            CurrentControl = new PupProductsView();
+        }
+        
+        private void ShowOrdersView()
+        {
+            CurrentControl = new PupOrdersView();
+        }
+
+        private void ShowAdminPUPControlView()
+        {
+            CurrentControl = new AdminPupControlView();
+        }
+        private void ShowAdminPUPProductsView()
+        {
+            CurrentControl = new AdminPupProductsView();
         }
     }
 }

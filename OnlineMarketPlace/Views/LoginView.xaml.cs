@@ -15,17 +15,19 @@ using System.Windows.Shapes;
 
 namespace OnlineMarketPlace
 {
-    public partial class LoginUserControl : UserControl
+    public partial class LoginView: UserControl
     {
         // Add event for login success
         public event RoutedEventHandler LoginSuccess;
+        public RelayCommand LoginClick { get; private set; }
 
-        public LoginUserControl()
+        public LoginView()
         {
             InitializeComponent();
+            LoginClick = new RelayCommand(param => Login_Click());
         }
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        public void Login_Click()
         {
             // Implement authentication logic using T-SQL database
             string username = txtUsername.Text;
@@ -41,17 +43,37 @@ namespace OnlineMarketPlace
             }
             else
             {
-                lblErrorMessage.Text = "Invalid username or password";
+                // lblErrorMessage.Text = "Invalid username or password";
             }
         }
+        /*
+        public void Login_Click(object sender, RoutedEventArgs e)
+        {
+            // Implement authentication logic using T-SQL database
+            string username = txtUsername.Text;
+            string password = txtPassword.Password;
+
+            // Example: Replace this with your actual authentication logic
+            bool isAuthenticated = AuthenticateUser(username, password);
+
+            if (isAuthenticated)
+            {
+                // Trigger the LoginSuccess event
+                LoginSuccess?.Invoke(this, new RoutedEventArgs());
+            }
+            else
+            {
+                // lblErrorMessage.Text = "Invalid username or password";
+            }
+         */
+
 
         private bool AuthenticateUser(string username, string password)
         {
-            // Implement your authentication logic here using T-SQL
-            // Example: Check credentials against the database
+            // Implement authentication logic here using T-SQL
+            // Check credentials against the database
 
-            // Replace the following line with your actual database check
-            // bool isValidUser = YourAuthenticationClass.CheckCredentials(username, password);
+            // bool isValidUser = AuthenticationClass.CheckCredentials(username, password);
             bool isValidUser = true;
 
             return isValidUser;

@@ -37,7 +37,5 @@ namespace OnlineMarketPlace
 
 
         // Other properties and methods
-
-        // Implement INotifyPropertyChanged and other logic
     }
 }

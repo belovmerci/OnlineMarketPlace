@@ -23,6 +23,9 @@ namespace OnlineMarketPlace
         public MainWindow()
         {
             InitializeComponent();
+
+            var viewModel = new MainWindowViewModel();
+            DataContext = viewModel;
         }
     }
 }

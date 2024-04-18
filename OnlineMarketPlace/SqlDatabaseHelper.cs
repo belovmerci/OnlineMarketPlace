@@ -195,7 +195,7 @@ namespace OnlineMarketPlace
 
         public bool AuthenticateUser(string username, string password)
         {
-            // ideally, passwords are hashed and then we pass hash
+            // Ideally, passwords are hashed and then we pass hash
             /*
              * ALTER TABLE Сотрудники_по_пунктам_выдачи
                 ADD Username NVARCHAR(50) NULL,
@@ -210,6 +210,7 @@ namespace OnlineMarketPlace
                         SELECT 'Authentication Successful' AS Result;
                         ELSE
                         SELECT 'Authentication Failed' AS Result;";
+
 
             return true;
 

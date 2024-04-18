@@ -2,12 +2,12 @@
 
 namespace OnlineMarketPlace
 {
-    public partial class AdminPupControl : UserControl
+    public partial class AdminPupControlView : UserControl
     {
-        public AdminPupControl()
+        public AdminPupControlView()
         {
-            InitializeComponent();
             DataContext = new AdminPUPControlViewModel();
+            InitializeComponent();
         }
     }
 }
