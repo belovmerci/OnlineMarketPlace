@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineMarketPlace
 {
-    class AdminPUPProductsViewModel
+    internal class LoginViewModel
     {
-        // Initialize AdminPUPProductsView
     }
 }

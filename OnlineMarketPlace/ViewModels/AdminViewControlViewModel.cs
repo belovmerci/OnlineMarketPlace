@@ -14,7 +14,6 @@ namespace OnlineMarketPlace
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ObservableCollection<Product> _products;
-
         public ObservableCollection<Product> Products
         {
             get { return _products; }

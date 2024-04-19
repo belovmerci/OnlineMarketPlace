@@ -24,6 +24,7 @@ namespace OnlineMarketPlace
         public LoginView()
         {
             InitializeComponent();
+            DataContext = new LoginViewModel();
             LoginClick = new RelayCommand(param => Login_Click());
         }
 

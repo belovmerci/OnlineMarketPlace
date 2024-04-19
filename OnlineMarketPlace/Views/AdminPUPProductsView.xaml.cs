@@ -22,8 +22,8 @@ namespace OnlineMarketPlace
     {
         public AdminPupProductsView()
         {
+            DataContext = new AdminPUPProductsViewModel();
             InitializeComponent();
-            // init adminpupproducts viewmodel
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -43,7 +43,6 @@ namespace OnlineMarketPlace
 
         private void SwitchToPUPViewButton_Click(object sender, RoutedEventArgs e)
         {
-            NavHelp.SwitchTo(new ViewProducts());
         }
 
         private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)

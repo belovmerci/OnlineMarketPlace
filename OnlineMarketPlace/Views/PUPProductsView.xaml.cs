@@ -24,13 +24,10 @@ namespace OnlineMarketPlace
         public ObservableCollection<Product> Products { get; set; }
         public PUPProductsView()
         {
-            // InitializeComponent();
 
-            // method to retrieve products from the database
             Products = GetProducts();
-
-            // Set the DataContext for data binding
-            DataContext = this;
+            DataContext = new PUPProductsViewModel();
+            // InitializeComponent();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

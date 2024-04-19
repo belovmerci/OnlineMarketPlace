@@ -62,7 +62,10 @@
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModels\AdminPUPControlViewModel.cs" />
     <Compile Include="ViewModels\AdminPUPProductsViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\PUPOrdersViewModel.cs" />
+    <Compile Include="ViewModels\PUPProductsViewModel.cs" />
     <Compile Include="Views\AdminPUPControlView.xaml.cs">
       <DependentUpon>AdminPUPControlView.xaml</DependentUpon>
     </Compile>

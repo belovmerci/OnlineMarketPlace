@@ -30,7 +30,7 @@ namespace OnlineMarketPlace
             Products = GetProducts();
 
             // Set the DataContext for data binding
-            DataContext = this;
+            DataContext = new PUPOrdersViewModel();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
