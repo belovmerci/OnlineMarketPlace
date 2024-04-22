@@ -17,7 +17,6 @@ namespace OnlineMarketPlace
 {
     public partial class LoginView: UserControl
     {
-        // Add event for login success
         public event RoutedEventHandler LoginSuccess;
         public RelayCommand LoginClick { get; private set; }
 
@@ -25,59 +24,24 @@ namespace OnlineMarketPlace
         {
             InitializeComponent();
             DataContext = new LoginViewModel();
-            LoginClick = new RelayCommand(param => Login_Click());
+            LoginClick = new RelayCommand(
+                param => AuthenticateUser(txtUsername.Text,
+                                          txtPassword.Password));
         }
 
-        public void Login_Click()
+        public void AuthenticateUser(string username, string password)
         {
-            // Implement authentication logic using T-SQL database
-            string username = txtUsername.Text;
-            string password = txtPassword.Password;
-
-            // Example: Replace this with your actual authentication logic
-            bool isAuthenticated = AuthenticateUser(username, password);
-
-            if (isAuthenticated)
+            // Obviously now how real security is done but meh.
+            SqlDatabaseHelper sqlh = new SqlDatabaseHelper();
+            if (sqlh.AuthenticateUser(username, password))
             {
                 // Trigger the LoginSuccess event
                 LoginSuccess?.Invoke(this, new RoutedEventArgs());
             }
             else
             {
-                // lblErrorMessage.Text = "Invalid username or password";
+                lblErrorMessage.Text = "Invalid username or password";
             }
-        }
-        /*
-        public void Login_Click(object sender, RoutedEventArgs e)
-        {
-            // Implement authentication logic using T-SQL database
-            string username = txtUsername.Text;
-            string password = txtPassword.Password;
-
-            // Example: Replace this with your actual authentication logic
-            bool isAuthenticated = AuthenticateUser(username, password);
-
-            if (isAuthenticated)
-            {
-                // Trigger the LoginSuccess event
-                LoginSuccess?.Invoke(this, new RoutedEventArgs());
-            }
-            else
-            {
-                // lblErrorMessage.Text = "Invalid username or password";
-            }
-         */
-
-
-        private bool AuthenticateUser(string username, string password)
-        {
-            // Implement authentication logic here using T-SQL
-            // Check credentials against the database
-
-            // bool isValidUser = AuthenticationClass.CheckCredentials(username, password);
-            bool isValidUser = true;
-
-            return isValidUser;
         }
     }
 }

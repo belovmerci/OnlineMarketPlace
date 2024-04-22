@@ -10,11 +10,17 @@ namespace OnlineMarketPlace
 {
     public class SqlDatabaseHelper
     {
+
         private readonly string connectionString;
 
         public SqlDatabaseHelper(string connectionString)
         {
             this.connectionString = connectionString;
+        }
+        public SqlDatabaseHelper()
+        {
+            // this.connectionString = ;
+            // fill with proper string
         }
 
         public DataTable ExecuteQuery(string query, SqlParameter[] parameters = null)
@@ -204,19 +210,30 @@ namespace OnlineMarketPlace
                 ALTER TABLE Сотрудники_по_пунктам_выдачи
                 ADD CONSTRAINT UQ_Username UNIQUE (Username);
             */
-            string query = @"IF EXISTS( SELECT 1 FROM Сотрудники_по_пунктам_выдачи
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = String.Format(@"IF EXISTS( SELECT 1 FROM Сотрудники_по_пунктам_выдачи
                         WHERE Username = {0}
                         AND PasswordHash = {1})
                         SELECT 'Authentication Successful' AS Result;
                         ELSE
-                        SELECT 'Authentication Failed' AS Result;";
+                        SELECT 'Authentication Failed' AS Result;", username, password);
 
+                SqlCommand command = new SqlCommand(query, connection);
 
-            return true;
-
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return reader.GetString(0) == "Authentication Successful" ? true : false;
+                    }
+                }
+            }
+            return false;
         }
-
-
 
 
     }
