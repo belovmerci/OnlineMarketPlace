@@ -23,7 +23,7 @@ namespace OnlineMarketPlace
         public MainWindow()
         {
             InitializeComponent(); 
-            DataContext = new MainWindowViewModel();
+            DataContext = NavHelp.MainWindowViewModel;
         }
     }
 }

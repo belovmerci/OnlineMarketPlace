@@ -12,6 +12,9 @@ namespace OnlineMarketPlace
     {
         private UserControl _currentControl;
 
+        public string username;
+        public string password;
+
         public RelayCommand ShowLoginViewCommand { get; private set; }
         public RelayCommand ShowViewProductsCommand { get; private set; }
         public RelayCommand ShowOrdersViewCommand { get; private set; }

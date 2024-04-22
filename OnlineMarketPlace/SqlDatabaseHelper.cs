@@ -19,7 +19,11 @@ namespace OnlineMarketPlace
         }
         public SqlDatabaseHelper()
         {
-            // this.connectionString = ;
+            // Server=myServerAddress;Database=myDataBase;User Id=myUsername;Password=myPassword;
+            this.connectionString = @"Server = myServerAddress;
+                                      Database = vip2023;
+                                      User Id = myUsername;
+                                      Password = myPassword;";
             // fill with proper string
         }
 

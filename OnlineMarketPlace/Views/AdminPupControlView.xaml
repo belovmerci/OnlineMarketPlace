@@ -44,8 +44,6 @@
                    Grid.Column="1"/>
         <Button Content="Просмотр заказов" Margin="254,0,163,0" VerticalAlignment="Center" Height="30"
                    Command="{Binding ShowAdminPupProductsViewCommand}" Background="Orange" Grid.Column="1"/>
-        <Button Content="Выйти" Margin="422,0,10,0" VerticalAlignment="Center" Height="30"
-                   Background="Red" Grid.Column="1"/>
         <Button Content="Товары" Height="30" Grid.Column="1" Margin="362,10,103,10"/>
 
 

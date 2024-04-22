@@ -8,47 +8,50 @@ using System.Windows;
 
 namespace OnlineMarketPlace
 {
-    internal class LoginViewModel
+    internal class LoginViewModel : ViewModelBase
     {
-        public event RoutedEventHandler LoginSuccess;
 
-        public void AuthenticateUser(string username, string password)
+        private string _username;
+        private string _password;
+
+        public string Username
         {
-            // Obviously now how real security is done but meh.
-            SqlDatabaseHelper sqlh = new SqlDatabaseHelper();
-            if (sqlh.AuthenticateUser(username, password))
+            get { return _username; }
+            set
             {
-                // Trigger the LoginSuccess event
-                LoginSuccess?.Invoke(this, new RoutedEventArgs());
-            }
-            else
-            {
-                // lblErrorMessage.Text = "Invalid username or password";
+                _username = value;
+                OnPropertyChanged(nameof(Username));
             }
         }
 
-        /*
-        public void Login_Click(object sender, RoutedEventArgs e)
+        public string Password
         {
-            // Implement authentication logic using T-SQL database
-            string username = txtUsername.Text;
-            string password = txtPassword.Password;
-
-            // Example: Replace this with your actual authentication logic
-            bool isAuthenticated = AuthenticateUser(username, password);
-
-            if (isAuthenticated)
+            get { return _password; }
+            set
             {
-                // Trigger the LoginSuccess event
-                LoginSuccess?.Invoke(this, new RoutedEventArgs());
+                _password = value;
+                OnPropertyChanged(nameof(Password));
             }
-            else
-            {
-                // lblErrorMessage.Text = "Invalid username or password";
-            }
-         */
+        }
 
+        public RelayCommand LoginClick { get; private set; }
 
+        public LoginViewModel()
+        {
+            LoginClick = new RelayCommand(ExecuteLogin);
+        }
+
+        private void ExecuteLogin(object parameter)
+        {
+            // Access username and password from properties
+            string username = Username;
+            string password = Password;
+
+            // Perform authentication logic here
+            NavHelp.AuthenticateUser(username, password);
+            NavHelp.MainWindowViewModel.username = username;
+            NavHelp.MainWindowViewModel.password = password;
+        }
 
     }
 }

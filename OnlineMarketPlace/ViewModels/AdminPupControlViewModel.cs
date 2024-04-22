@@ -77,11 +77,6 @@ namespace OnlineMarketPlace
             // Handle Asc/Desc button click
         }
 
-        public void QuitButtonClick(object sender, RoutedEventArgs e)
-        {
-            // Handle quit button click
-        }
-
         public void SwitchToOrdersViewButtonClick(object sender, RoutedEventArgs e)
         {
             // Handle switch to orders view button click
