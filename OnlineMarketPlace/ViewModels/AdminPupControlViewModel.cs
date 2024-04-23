@@ -5,10 +5,15 @@ using System.Windows;
 
 namespace OnlineMarketPlace
 {
+
     public class AdminPUPControlViewModel : ViewModelBase
     {
         private ObservableCollection<Product> _products;
         private ObservableCollection<PickUpPoint> _pickUpPoints;
+
+        private ObservableCollection<Product> _originalProducts;
+        // private ObservableCollection<PickUpPoint> _originalPickUpPoints;
+
         private PickUpPoint _selectedPickUpPoint;
         private string _searchText;
 
@@ -27,7 +32,9 @@ namespace OnlineMarketPlace
 
         public AdminPUPControlViewModel()
         {
-            // Initialize commands or handle button clicks directly
+            SqlDatabaseHelper sqlh = new SqlDatabaseHelper();
+            PickUpPoints = sqlh.PullAllPUPs();
+            _originalProducts = new ObservableCollection<Product>();
         }
 
         public ObservableCollection<Product> Products
@@ -62,11 +69,6 @@ namespace OnlineMarketPlace
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public void SearchButtonClick(object sender, RoutedEventArgs e)
         {
             // Handle search button click
@@ -82,6 +84,12 @@ namespace OnlineMarketPlace
             // Handle switch to orders view button click
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        /*
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        */
+        // public event PropertyChangedEventHandler PropertyChanged;
     }
 }
