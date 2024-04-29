@@ -16,7 +16,7 @@ namespace OnlineMarketPlace
         public string Gender { get; set; }
         public string PassportData { get; set; }
 
-        public int Wage { get; set; }
+        public decimal Wage { get; set; }
         public decimal Rating { get; set; }
     }
 }

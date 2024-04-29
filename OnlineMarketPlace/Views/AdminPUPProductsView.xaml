@@ -26,7 +26,7 @@
 
         <!-- Controls -->
         <Button Content="Восх/Нисход" Margin="196,0,212,0" VerticalAlignment="Center"
-             Click="AscDescButton_Click" Grid.Column="1" Height="30"/>
+             Command="{Binding AscDescButtonCommand}" Grid.Column="1" Height="30"/>
         <Button Content="ПВЗ" Margin="307,0,97,0" VerticalAlignment="Center" Background="Orange"
              Command="{Binding ShowAdminPupControlViewCommand}" Click="SwitchToPUPViewButton_Click" Grid.Column="1" Height="30"/>
 

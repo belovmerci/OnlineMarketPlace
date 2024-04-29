@@ -9,10 +9,8 @@ using System.Windows.Input;
 
 namespace OnlineMarketPlace
 {
-    public class AdminViewControlViewModel : INotifyPropertyChanged
+    public class AdminViewControlViewModel : ViewModelBase
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private ObservableCollection<Product> _products;
         public ObservableCollection<Product> Products
         {
@@ -22,11 +20,6 @@ namespace OnlineMarketPlace
                 _products = value;
                 OnPropertyChanged(nameof(Products));
             }
-        }
-
-        private void OnPropertyChanged(string v)
-        {
-            throw new NotImplementedException();
         }
 
         public ICommand AddProductCommand { get; }

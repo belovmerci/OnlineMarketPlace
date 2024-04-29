@@ -14,6 +14,8 @@ namespace OnlineMarketPlace
 
         public string username;
         public string password;
+        public bool IsAdmin;
+        public int EmployeeId;
 
         public RelayCommand ShowLoginViewCommand { get; private set; }
         public RelayCommand ShowViewProductsCommand { get; private set; }
@@ -50,7 +52,7 @@ namespace OnlineMarketPlace
 
         private void ShowProductsView()
         {
-            CurrentControl = new PupProductsView();
+            CurrentControl = new PUPProductsView();
         }
         
         private void ShowOrdersView()

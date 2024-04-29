@@ -55,7 +55,7 @@ namespace OnlineMarketPlace
 
         public static void AuthenticateUser(string username, string password)
         {
-            // Obviously now how real security is done but meh
+            // Obviously now how real security is done but eh.
             SqlDatabaseHelper sqlh = new SqlDatabaseHelper();
 
             if (sqlh.AuthenticateUser(username, password))
@@ -68,8 +68,5 @@ namespace OnlineMarketPlace
                 Console.WriteLine("ERROR!");
             }
         }
-
-
     }
-
 }
