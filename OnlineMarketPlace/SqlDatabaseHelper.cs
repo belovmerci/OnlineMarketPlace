@@ -241,7 +241,8 @@ namespace OnlineMarketPlace
                                 Gender = reader.GetString(reader.GetOrdinal("ПОЛ")),
                                 PassportData = reader.GetString(reader.GetOrdinal("СЕРИЯ_НОМЕР_ПАСПОРТА")),
                                 Wage = reader.GetInt32(reader.GetOrdinal("ЗАРПЛАТА")),
-                                Rating = reader.IsDBNull(reader.GetOrdinal("РЕЙТИНГ")) ? 0 : reader.GetDecimal(reader.GetOrdinal("РЕЙТИНГ"))
+                                Rating = reader.IsDBNull(reader.GetOrdinal("РЕЙТИНГ")) ?
+                                    0 : reader.GetDecimal(reader.GetOrdinal("РЕЙТИНГ"))
                             };
                         }
                     }
@@ -283,11 +284,11 @@ namespace OnlineMarketPlace
                 {
                     if (reader.Read())
                     {
-                        // Retrieve the stored password hash and isAdmin status
+                        // Retrieve the stored password and isAdmin
                         string storedPasswordHash = reader.GetString(0);
                         isAdmin = reader.GetBoolean(1);
 
-                        // Verify the provided password against the stored hash
+                        // Verify the provided password
                         if (VerifyPassword(password, storedPasswordHash))
                         {
                             return true; // Authentication successful
@@ -355,40 +356,6 @@ namespace OnlineMarketPlace
             }
         }
 
-
-        /*
-        public void SaveProductChanges(
-            ObservableCollection<Product> productsToAdd,
-            ObservableCollection<Product> productsToDelete)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                foreach (var product in productsToAdd)
-                {
-                    string insertQuery = "INSERT INTO Products (Name, Description, Price, Rating, Amount) " +
-                                         "VALUES (@Name, @Description, @Price, @Rating, @Amount)";
-                    SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
-                    insertCommand.Parameters.AddWithValue("@Name", product.Name);
-                    insertCommand.Parameters.AddWithValue("@Description", product.Description);
-                    insertCommand.Parameters.AddWithValue("@Price", product.Price);
-                    insertCommand.Parameters.AddWithValue("@Rating", product.Rating);
-                    insertCommand.Parameters.AddWithValue("@Amount", product.Amount);
-                    insertCommand.ExecuteNonQuery();
-                }
-
-                foreach (var product in productsToDelete)
-                {
-                    string deleteQuery = "DELETE FROM Products WHERE Id = @ProductId";
-                    SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection);
-                    deleteCommand.Parameters.AddWithValue("@ProductId", product.Id);
-                    deleteCommand.ExecuteNonQuery();
-                }
-            }
-        }
-        */
-
         public ObservableCollection<Employee> PullAllEmployees()
         {
             ObservableCollection<Employee> employees = new ObservableCollection<Employee>();
@@ -431,7 +398,31 @@ namespace OnlineMarketPlace
             {
                 connection.Open();
 
-                string query = "SELECT * FROM Employees WHERE PUP_ID = @PUP_ID;";
+                string query = @"
+            SELECT 
+                Люди.ID,
+                Люди.ИМЯ,
+                Люди.ФАМИЛИЯ,
+                Люди.ОТЧЕСТВО,
+                Люди.ДАТА_РОЖДЕНИЯ,
+                AVG(ISNULL(ZP.ОЦЕНКА, 0)) AS Rating,
+                SPV.ЗАРПЛАТА
+            FROM 
+                Люди
+            INNER JOIN 
+                Сотрудники_по_пунктам_выдачи SPV ON Люди.ID = SPV.FK_РАБОТНИКА
+            LEFT JOIN 
+                Заказы_по_пунктам_выдачи ZP ON SPV.ID = ZP.FK_СОТРУДНИКА
+            WHERE 
+                SPV.FK_ПУНКТА_ВЫДАЧИ = @PUP_ID
+            GROUP BY 
+                Люди.ID,
+                Люди.ИМЯ,
+                Люди.ФАМИЛИЯ,
+                Люди.ОТЧЕСТВО,
+                Люди.ДАТА_РОЖДЕНИЯ,
+                SPV.ЗАРПЛАТА";
+
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@PUP_ID", PUP_ID);
 
@@ -442,12 +433,12 @@ namespace OnlineMarketPlace
                         Employee employee = new Employee
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("ID")),
-                            Name = reader.GetString(reader.GetOrdinal("Name")),
-                            Surname = reader.GetString(reader.GetOrdinal("Surname")),
-                            FathersName = reader.GetString(reader.GetOrdinal("FathersName")),
-                            DateOfBirth = reader.GetDateTime(reader.GetOrdinal("DateOfBirth")),
-                            Wage = reader.GetDecimal(reader.GetOrdinal("Wage")),
-                            Rating = reader.GetDecimal(reader.GetOrdinal("Rating"))
+                            Name = reader.GetString(reader.GetOrdinal("ИМЯ")),
+                            Surname = reader.GetString(reader.GetOrdinal("ФАМИЛИЯ")),
+                            FathersName = reader.GetString(reader.GetOrdinal("ОТЧЕСТВО")),
+                            DateOfBirth = reader.GetDateTime(reader.GetOrdinal("ДАТА_РОЖДЕНИЯ")),
+                            Wage = reader.GetDecimal(reader.GetOrdinal("ЗАРПЛАТА")),
+                            Rating = reader.IsDBNull(reader.GetOrdinal("Rating")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Rating"))
                         };
 
                         employees.Add(employee);
@@ -489,10 +480,37 @@ namespace OnlineMarketPlace
             }
         }
 
+        public void SaveEmployeeAssignments(ObservableCollection<Employee> employeesToAdd, ObservableCollection<Employee> employeesToDelete, int pickUpPointId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                foreach (var employee in employeesToAdd)
+                {
+                    string insertQuery = "INSERT INTO Сотрудники_по_пунктам_выдачи (FK_РАБОТНИКА, FK_ПУНКТА_ВЫДАЧИ, ЗАРПЛАТА) " +
+                                         "VALUES (@EmployeeId, @PickUpPointId, @Wage)";
+                    SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
+                    insertCommand.Parameters.AddWithValue("@EmployeeId", employee.Id);
+                    insertCommand.Parameters.AddWithValue("@PickUpPointId", pickUpPointId);
+                    insertCommand.Parameters.AddWithValue("@Wage", employee.Wage);
+                    insertCommand.ExecuteNonQuery();
+                }
+
+                foreach (var employee in employeesToDelete)
+                {
+                    string deleteQuery = "DELETE FROM Сотрудники_по_пунктам_выдачи WHERE FK_РАБОТНИКА = @EmployeeId AND FK_ПУНКТА_ВЫДАЧИ = @PickUpPointId";
+                    SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection);
+                    deleteCommand.Parameters.AddWithValue("@EmployeeId", employee.Id);
+                    deleteCommand.Parameters.AddWithValue("@PickUpPointId", pickUpPointId);
+                    deleteCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // This method allows non-admin users to only change the amount of a product in the database
         public void UpdateProductAmount(int productId, int newAmount)
         {
-            // This method allows non-admin users to only change the amount of a product in the database
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -512,36 +530,36 @@ namespace OnlineMarketPlace
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"SELECT 
-                                    O.ID AS OrderId,
-                                    O.ЦЕНА AS Price,
-                                    O.ДАТА_СОЗДАНИЯ AS CreationDate,
-                                    O.FK_ЗАКАЗЧИКА AS CustomerId,
-                                    L.ИМЯ + ' ' + L.ФАМИЛИЯ AS CustomerName,
-                                    L.КОНТАКТНЫЙ_ТЕЛЕФОН AS CustomerContactInfo,
-                                    T.ID AS ProductId,
-                                    T.НАЗВАНИЕ AS ProductName,
-                                    T.ОПИСАНИЕ AS ProductDescription,
-                                    T.ЦЕНА AS ProductPrice,
-                                    T.РЕЙТИНГ AS ProductRating,
-                                    T.КОЛИЧЕСТВО AS ProductAmount,
-                                    P.ID AS PickUpPointId,
-                                    P.СТРАНА AS Country,
-                                    P.ГОРОД AS City,
-                                    P.УЛИЦА AS Street,
-                                    P.НОМЕР_УЛИЦЫ AS StreetNumber,
-                                    P.ПОЧТОВЫЙ_ИНДЕКС AS PostalCode
-                                FROM 
-                                    Заказы O
-                                INNER JOIN 
-                                    Люди L ON O.FK_ЗАКАЗЧИКА = L.ID
-                                INNER JOIN 
-                                    Товары_по_заказам TP ON O.ID = TP.FK_ЗАКАЗА
-                                INNER JOIN 
-                                    Товары T ON TP.FK_ТОВАРА = T.ID
-                                INNER JOIN 
-                                    Заказы_по_пунктам_выдачи ZP ON O.ID = ZP.FK_ЗАКАЗА
-                                INNER JOIN 
-                                    Пункты_выдачи P ON ZP.FK_ПУНКТА_ВЫДАЧИ = P.ID";
+                            O.ID AS OrderId,
+                            O.ЦЕНА AS Price,
+                            O.ДАТА_СОЗДАНИЯ AS CreationDate,
+                            O.FK_ЗАКАЗЧИКА AS CustomerId,
+                            L.ИМЯ + ' ' + L.ФАМИЛИЯ AS CustomerName,
+                            L.КОНТАКТНЫЙ_ТЕЛЕФОН AS CustomerContactInfo,
+                            T.ID AS ProductId,
+                            T.НАЗВАНИЕ AS ProductName,
+                            T.ОПИСАНИЕ AS ProductDescription,
+                            T.ЦЕНА AS ProductPrice,
+                            T.РЕЙТИНГ AS ProductRating,
+                            T.КОЛИЧЕСТВО AS ProductAmount,
+                            P.ID AS PickUpPointId,
+                            P.СТРАНА AS Country,
+                            P.ГОРОД AS City,
+                            P.УЛИЦА AS Street,
+                            P.НОМЕР_УЛИЦЫ AS StreetNumber,
+                            P.ПОЧТОВЫЙ_ИНДЕКС AS PostalCode
+                        FROM 
+                            Заказы O
+                        INNER JOIN 
+                            Люди L ON O.FK_ЗАКАЗЧИКА = L.ID
+                        INNER JOIN 
+                            Товары_по_заказам TP ON O.ID = TP.FK_ЗАКАЗА
+                        INNER JOIN 
+                            Товары T ON TP.FK_ТОВАРА = T.ID
+                        INNER JOIN 
+                            Заказы_по_пунктам_выдачи ZP ON O.ID = ZP.FK_ЗАКАЗА
+                        INNER JOIN 
+                            Пункты_выдачи P ON ZP.FK_ПУНКТА_ВЫДАЧИ = P.ID";
 
                 SqlCommand command = new SqlCommand(query, connection);
 
@@ -550,9 +568,28 @@ namespace OnlineMarketPlace
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
 
+                    int orderIdOrdinal = reader.GetOrdinal("OrderId");
+                    int priceOrdinal = reader.GetOrdinal("Price");
+                    int creationDateOrdinal = reader.GetOrdinal("CreationDate");
+                    int customerIdOrdinal = reader.GetOrdinal("CustomerId");
+                    int customerNameOrdinal = reader.GetOrdinal("CustomerName");
+                    int customerContactInfoOrdinal = reader.GetOrdinal("CustomerContactInfo");
+                    int productIdOrdinal = reader.GetOrdinal("ProductId");
+                    int productNameOrdinal = reader.GetOrdinal("ProductName");
+                    int productDescriptionOrdinal = reader.GetOrdinal("ProductDescription");
+                    int productPriceOrdinal = reader.GetOrdinal("ProductPrice");
+                    int productRatingOrdinal = reader.GetOrdinal("ProductRating");
+                    int productAmountOrdinal = reader.GetOrdinal("ProductAmount");
+                    int pickUpPointIdOrdinal = reader.GetOrdinal("PickUpPointId");
+                    int countryOrdinal = reader.GetOrdinal("Country");
+                    int cityOrdinal = reader.GetOrdinal("City");
+                    int streetOrdinal = reader.GetOrdinal("Street");
+                    int streetNumberOrdinal = reader.GetOrdinal("StreetNumber");
+                    int postalCodeOrdinal = reader.GetOrdinal("PostalCode");
+
                     while (reader.Read())
                     {
-                        int orderId = Convert.ToInt32(reader["OrderId"]);
+                        int orderId = Convert.ToInt32(reader[orderIdOrdinal]);
 
                         Order existingOrder = orders.FirstOrDefault(o => o.Id == orderId);
 
@@ -561,11 +598,11 @@ namespace OnlineMarketPlace
                             existingOrder = new Order
                             {
                                 Id = orderId,
-                                Price = Convert.ToDecimal(reader["Price"]),
-                                CreationDate = Convert.ToDateTime(reader["CreationDate"]),
-                                CustomerId = Convert.ToInt32(reader["CustomerId"]),
-                                CustomerName = reader["CustomerName"].ToString(),
-                                CustomerContactInfo = reader["CustomerContactInfo"].ToString(),
+                                Price = Convert.ToDecimal(reader[priceOrdinal]),
+                                CreationDate = Convert.ToDateTime(reader[creationDateOrdinal]),
+                                CustomerId = Convert.ToInt32(reader[customerIdOrdinal]),
+                                CustomerName = reader[customerNameOrdinal].ToString(),
+                                CustomerContactInfo = reader[customerContactInfoOrdinal].ToString(),
                                 OrderItems = new List<Product>(),
                                 PickUpPoints = new List<PickUpPoint>()
                             };
@@ -575,24 +612,24 @@ namespace OnlineMarketPlace
 
                         Product product = new Product
                         {
-                            Id = Convert.ToInt32(reader["ProductId"]),
-                            Name = reader["ProductName"].ToString(),
-                            Description = reader["ProductDescription"].ToString(),
-                            Price = Convert.ToDecimal(reader["ProductPrice"]),
-                            Rating = Convert.ToDecimal(reader["ProductRating"]),
-                            Amount = Convert.ToInt32(reader["ProductAmount"])
+                            Id = Convert.ToInt32(reader[productIdOrdinal]),
+                            Name = reader[productNameOrdinal].ToString(),
+                            Description = reader[productDescriptionOrdinal].ToString(),
+                            Price = Convert.ToDecimal(reader[productPriceOrdinal]),
+                            Rating = Convert.ToDecimal(reader[productRatingOrdinal]),
+                            Amount = Convert.ToInt32(reader[productAmountOrdinal])
                         };
 
                         existingOrder.OrderItems.Add(product);
 
                         PickUpPoint pickUpPoint = new PickUpPoint
                         {
-                            Id = Convert.ToInt32(reader["PickUpPointId"]),
-                            Country = reader["Country"].ToString(),
-                            City = reader["City"].ToString(),
-                            Street = reader["Street"].ToString(),
-                            StreetNumber = reader["StreetNumber"].ToString(),
-                            PostIndex = reader["PostalCode"].ToString()
+                            Id = Convert.ToInt32(reader[pickUpPointIdOrdinal]),
+                            Country = reader[countryOrdinal].ToString(),
+                            City = reader[cityOrdinal].ToString(),
+                            Street = reader[streetOrdinal].ToString(),
+                            StreetNumber = reader[streetNumberOrdinal].ToString(),
+                            PostIndex = reader[postalCodeOrdinal].ToString()
                         };
 
                         existingOrder.PickUpPoints.Add(pickUpPoint);
@@ -616,12 +653,12 @@ namespace OnlineMarketPlace
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"SELECT Orders.ID, Orders.Price, Orders.CreationDate, Orders.FK_ЗАКАЗЧИКА, 
-                                        Люди.ИМЯ, Люди.ФАМИЛИЯ, Люди.КОНТАКТНЫЙ_ТЕЛЕФОН
-                                 FROM Orders
-                                 JOIN Люди ON Orders.FK_ЗАКАЗЧИКА = Люди.ID
-                                 JOIN Заказы_по_пунктам_выдачи ON Orders.ID = Заказы_по_пунктам_выдачи.FK_ЗАКАЗА
-                                 JOIN Сотрудники_по_пунктам_выдачи ON Заказы_по_пунктам_выдачи.FK_СОТРУДНИКА = Сотрудники_по_пунктам_выдачи.ID
-                                 WHERE Сотрудники_по_пунктам_выдачи.FK_РАБОТНИКА = @EmployeeId";
+                                Люди.ИМЯ, Люди.ФАМИЛИЯ, Люди.КОНТАКТНЫЙ_ТЕЛЕФОН
+                         FROM Orders
+                         JOIN Люди ON Orders.FK_ЗАКАЗЧИКА = Люди.ID
+                         JOIN Заказы_по_пунктам_выдачи ON Orders.ID = Заказы_по_пунктам_выдачи.FK_ЗАКАЗА
+                         JOIN Сотрудники_по_пунктам_выдачи ON Заказы_по_пунктам_выдачи.FK_СОТРУДНИКА = Сотрудники_по_пунктам_выдачи.ID
+                         WHERE Сотрудники_по_пунктам_выдачи.FK_РАБОТНИКА = @EmployeeId";
 
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@EmployeeId", employeeId);
@@ -631,16 +668,24 @@ namespace OnlineMarketPlace
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
 
+                    int orderIdOrdinal = reader.GetOrdinal("ID");
+                    int priceOrdinal = reader.GetOrdinal("Price");
+                    int creationDateOrdinal = reader.GetOrdinal("CreationDate");
+                    int customerIdOrdinal = reader.GetOrdinal("FK_ЗАКАЗЧИКА");
+                    int nameOrdinal = reader.GetOrdinal("ИМЯ");
+                    int surnameOrdinal = reader.GetOrdinal("ФАМИЛИЯ");
+                    int contactInfoOrdinal = reader.GetOrdinal("КОНТАКТНЫЙ_ТЕЛЕФОН");
+
                     while (reader.Read())
                     {
                         Order order = new Order
                         {
-                            Id = reader.GetInt32(0),
-                            Price = reader.GetDecimal(1),
-                            CreationDate = reader.GetDateTime(2),
-                            CustomerId = reader.GetInt32(3),
-                            CustomerName = reader.GetString(4) + " " + reader.GetString(5),
-                            CustomerContactInfo = reader.GetString(6)
+                            Id = reader.GetInt32(orderIdOrdinal),
+                            Price = reader.GetDecimal(priceOrdinal),
+                            CreationDate = reader.GetDateTime(creationDateOrdinal),
+                            CustomerId = reader.GetInt32(customerIdOrdinal),
+                            CustomerName = reader.GetString(nameOrdinal) + " " + reader.GetString(surnameOrdinal),
+                            CustomerContactInfo = reader.GetString(contactInfoOrdinal)
                         };
 
                         orders.Add(order);

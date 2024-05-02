@@ -18,5 +18,11 @@ namespace OnlineMarketPlace
 
         public decimal Wage { get; set; }
         public decimal Rating { get; set; }
+
+        public Employee()
+        {
+            // Прожиточный минимум
+            Wage = 19242.0m;
+        }
     }
 }
