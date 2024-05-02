@@ -20,7 +20,10 @@ namespace OnlineMarketPlace
         }
         public SqlDatabaseHelper()
         {
-            // Server=myServerAddress;Database=myDataBase;User Id=myUsername;Password=myPassword;
+            // Server=myServerAddress;
+            // Database=myDataBase;
+            // User Id=myUsername;
+            // Password=myPassword;
             this.connectionString = @"Server = myServerAddress;
                                       Database = vip2023;
                                       User Id = BelovAA;
@@ -97,7 +100,6 @@ namespace OnlineMarketPlace
                     }
                 }
             }
-
             return pickupPoints;
         }
 
@@ -141,7 +143,6 @@ namespace OnlineMarketPlace
                     Console.WriteLine("Error: " + ex.Message);
                 }
             }
-
             return pickupPoint;
         }
 
@@ -188,7 +189,6 @@ namespace OnlineMarketPlace
                     Console.WriteLine("Error: " + ex.Message);
                 }
             }
-
             return products;
         }
 
@@ -252,7 +252,6 @@ namespace OnlineMarketPlace
                     Console.WriteLine("Error: " + ex.Message);
                 }
             }
-
             return employee;
         }
 
@@ -386,7 +385,6 @@ namespace OnlineMarketPlace
                     }
                 }
             }
-
             return employees;
         }
 
@@ -642,7 +640,6 @@ namespace OnlineMarketPlace
                     Console.WriteLine("Error: " + ex.Message);
                 }
             }
-
             return orders;
         }
 
@@ -693,12 +690,12 @@ namespace OnlineMarketPlace
                 }
                 catch (Exception ex)
                 {
-                    // Handle exceptions
                     Console.WriteLine("Error: " + ex.Message);
                 }
             }
-
             return orders;
         }
+
+
     }
 }

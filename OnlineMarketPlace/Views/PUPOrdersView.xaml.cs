@@ -21,15 +21,9 @@ namespace OnlineMarketPlace
     /// </summary>
     public partial class PupOrdersView : UserControl
     {
-        public ObservableCollection<Product> Products { get; set; }
         public PupOrdersView()
         {
             // InitializeComponent();
-
-            // method to retrieve products from the database
-            Products = GetProducts();
-
-            // Set the DataContext for data binding
             DataContext = new PUPOrdersViewModel();
         }
 
@@ -48,16 +42,7 @@ namespace OnlineMarketPlace
 
         }
 
-        private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            // Handle the edit ending event, if needed
-            // For example, you can access the edited item and save changes to the database
-            var editedProduct = e.Row.Item as Product;
-            if (editedProduct != null)
-            {
-                // Implement logic to save changes to the database
-            }
-        }
+
 
         private ObservableCollection<Product> GetProducts()
         {

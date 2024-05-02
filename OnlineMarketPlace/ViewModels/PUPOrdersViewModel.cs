@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace OnlineMarketPlace
 {
@@ -13,6 +14,19 @@ namespace OnlineMarketPlace
     {
         private ObservableCollection<Order> _orders;
         private string _searchText;
+        public string OrdersSearchText
+        {
+            get
+            {
+                return _searchText;
+            }
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged(OrdersSearchText);
+                Search(value);
+            }
+        }
 
         public ObservableCollection<Order> Orders
         {
@@ -85,6 +99,17 @@ namespace OnlineMarketPlace
             // Refresh orders list by fetching from the database again
             SqlDatabaseHelper sqlh = new SqlDatabaseHelper();
             Orders = sqlh.PullPUPOrders(NavHelp.MainWindowViewModel.EmployeeId);
+        }
+
+        private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            // Handle the edit ending event, if needed
+            // For example, you can access the edited item and save changes to the database
+            var editedProduct = e.Row.Item as Product;
+            if (editedProduct != null)
+            {
+                // Implement logic to save changes to the database
+            }
         }
     }
 }
